@@ -484,21 +484,25 @@
                     余笑曰：「卿陷我作狗耶？」芸曰：「妾作狗久矣。」以箸強塞余口。<br><br>
                     余掩鼻咀嚼之，似覺脆美，開鼻再嚼，竟成異味，從此亦喜食。
                 </div>
-                <!-- Page 3: Translation (NEW) -->
+                <!-- Page 3: Translation Part 1 (Corresponds to Page 1) -->
                 <div class="text-page" id="text-page-3">
-                    <h3 style="text-align:center; color:#d63031; margin-bottom:20px;">【白話翻譯對照】</h3>
-                    我老婆陳芸就愛吃臭豆腐，也愛吃蝦鹵瓜，愈臭愈愛（奇怪？她怎會嫁給我？）。說真的，這兩種食物是我有生以來最想消滅的東西，我忍不住開她玩笑說：「狗改不了吃屎是因為沒有胃，屎殼郎整天想把粪便團成球是為了能化身為蟬。那愛臭的你算是狗呢？還是蟬呢？」<br><br>
+                    <div style="font-size:1.2rem; color:#d63031; font-weight:bold; margin-bottom:15px; border-bottom:2px solid #ddd; padding-bottom:5px;">【白話翻譯：對照第一頁】</div>
+                    我老婆陳芸就愛吃<span class="highlight">臭豆腐</span>，也愛吃蝦鹵瓜，愈臭愈愛（奇怪？她怎會嫁給我？）。說真的，這兩種食物是我有生以來最想消滅的東西，我忍不住開她玩笑說：「狗改不了吃屎是因為沒有胃，<span class="highlight">屎殼郎</span>整天想把粪便團成球是為了能化身為蟬。那愛臭的你算是狗呢？還是蟬呢？」<br><br>
                     芸聽了倒不以為意的說：「喜歡臭豆腐是因為它價格便宜，配飯佐粥兩相宜，從小我就認定這味道；至於蝦米鹵瓜嘛，可是嫁到你家後才吃到的，呵呵。」（「呵呵」？）<br><br>
-                    我說：「這麼說來我家倒成了狗窩了？」<br><br>
+                    我說：「這麼說來我家倒成了<span class="highlight">狗窩</span>了？」
+                </div>
+                <!-- Page 4: Translation Part 2 (Corresponds to Page 2) -->
+                <div class="text-page" id="text-page-4">
+                    <div style="font-size:1.2rem; color:#d63031; font-weight:bold; margin-bottom:15px; border-bottom:2px solid #ddd; padding-bottom:5px;">【白話翻譯：對照第二頁】</div>
                     芸聽了露出尷尬又不失禮貌的笑容，辯解著說：「你說的那些臭菜，每個人家裡都嘛有，只不過差在人吃或不吃而已。臭豆腐我是不敢勉強你啦，嫩，倒是蝦米鹵瓜不妨捏著鼻子吃吃看。」<br><br>
                     我笑說：「你這是想陷害我當狗吧？」<br>
-                    芸說：「我當狗都當這麼久了，敢不敢啦。」說著她拿起筷子夾了一塊鹵瓜強渡關山，硬是塞進我嘴裡。<br><br>
+                    芸說：「我當狗都當這麼久了，敢不敢啦。」說著她拿起筷子夾了一塊鹵瓜強渡關山，<span class="highlight">硬是塞進</span>我嘴裡。<br><br>
                     我趕緊掩鼻咬了幾下，（咦？嗯？這美味！）味道似乎變得爽脆鮮美了，我勇敢的放開鼻子再咬它幾下，（傑克，這真是太神奇了！）原本那臭不可聞的味道竟神奇的轉變成一種美味，從此我便一試成主顧了。
                 </div>
                 
                 <div class="pagination">
                     <button class="page-btn" id="prev-page" onclick="changePage(-1)" disabled>❮ 上一頁</button>
-                    <span id="page-num" style="font-size:1.2rem;">1 / 3</span>
+                    <span id="page-num" style="font-size:1.2rem;">1 / 4</span>
                     <button class="page-btn" id="next-page" onclick="changePage(1)">下一頁 ❯</button>
                 </div>
             </div>
@@ -845,14 +849,14 @@
         textPage += n;
         
         if(textPage < 1) textPage = 1;
-        if(textPage > 3) textPage = 3; // 總頁數改為 3
+        if(textPage > 4) textPage = 4; // 總頁數改為 4
         
         // 新頁面進場動畫
         pages[textPage-1].classList.add('active');
-        document.getElementById('page-num').innerText = `${textPage} / 3`;
+        document.getElementById('page-num').innerText = `${textPage} / 4`;
         
         prevBtn.disabled = (textPage === 1);
-        nextBtn.disabled = (textPage === 3);
+        nextBtn.disabled = (textPage === 4);
     }
 
     function openVideoModal() { document.getElementById('video-modal').style.display = 'flex'; }
