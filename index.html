@@ -330,7 +330,7 @@
             opacity: 0; pointer-events: none; transition: 0.5s;
         }
 
-        /* Slide 6: 特質分類 */
+        /* Slide 6: 特質分類 (木牌與修復) */
         .sort-game-container {
             display: flex; width: 100%; height: 75%; gap: 30px; position: relative;
         }
@@ -528,7 +528,7 @@
                 <div class="avatar-group">
                     <!-- Shen Fu: Gua Pi Mao (Skullcap), Braid, Scholar Robe -->
                     <svg class="avatar-svg" viewBox="0 0 100 100">
-                        <circle cx="50" cy="50" r="48" fill="#f5f6fa"/>
+                        <circle cx="50" cy="50" r="48" fill="#f1f2f6"/>
                         <!-- Hat: Gua Pi Mao (Black with Red Knob) -->
                         <path d="M20,30 Q50,10 80,30 L80,45 Q50,25 20,45 Z" fill="#2d3436"/>
                         <circle cx="50" cy="20" r="6" fill="#d63031"/>
@@ -938,12 +938,12 @@
 
     // === Slide 6: 特質分類 (含重置) ===
     const traits = [
-        { id: 1, txt: "喜食蒜", target: "shen" },
-        { id: 2, txt: "喜食臭豆腐", target: "yun" },
-        { id: 3, txt: "最討厭蝦鹵瓜", target: "shen" },
-        { id: 4, txt: "強人所難", target: "yun" },
-        { id: 5, txt: "勇於嘗試", target: "shen" },
-        { id: 6, txt: "自認為狗", target: "yun" }
+        { id: 1, txt: "言語毒舌", target: "shen" }, 
+        { id: 2, txt: "喜食臭腐", target: "yun" }, 
+        { id: 3, txt: "厭惡鹵瓜", target: "shen" }, 
+        { id: 4, txt: "強行餵食", target: "yun" }, 
+        { id: 5, txt: "從此愛上", target: "shen" }, 
+        { id: 6, txt: "自甘作狗", target: "yun" }  
     ];
     let selectedCard = null;
 
@@ -1083,7 +1083,7 @@
 
         if(allCorrect) {
             title.innerText = "🎉 挑戰成功！"; title.style.color = "#00b894";
-            msg.innerHTML = "沈復：討厭怪味但願意嘗試。<br>芸娘：個性強勢又調皮，愛吃臭豆腐。";
+            msg.innerHTML = "沈復：嘴巴壞愛取笑，但最後也愛上了。<br>芸娘：愛吃臭豆腐，還會硬塞給老公吃。";
             document.getElementById('check-btn').style.display = 'none';
         } else {
             title.innerText = "❌ 哎呀，有錯誤喔！"; title.style.color = "#d63031";
