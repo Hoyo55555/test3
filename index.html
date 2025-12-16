@@ -132,39 +132,89 @@
         .hero-visual { margin: 30px; animation: float 3s ease-in-out infinite; }
         @keyframes float { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-10px);} }
 
-        /* Slide 2: 原文 (翻頁式) */
+        /* Slide 2: 原文 (翻頁式) & 影片 */
         .text-layout-v {
             display: flex;
             flex-direction: column;
-            width: 85%;
-            height: 85%;
+            width: 95%; /* 拉寬 */
+            height: 90%; /* 拉長 */
             gap: 15px;
+            position: relative;
         }
+        
+        .video-btn {
+            position: absolute;
+            top: -60px;
+            right: 0;
+            background: #ff7675;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
+        }
+        .video-btn:hover { background: #d63031; transform: scale(1.05); }
+
         .text-book-container {
-            flex: 3;
+            flex: 6; /* 增加佔比 */
             position: relative;
             background: #fff;
             border: 1px solid #ccc;
             border-radius: 10px;
             box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
-            overflow: hidden;
+            overflow: hidden; /* 隱藏超出部分 */
             display: flex;
             flex-direction: column;
+            perspective: 1500px; /* 3D 視角 */
         }
+
         .text-page {
             flex: 1;
-            padding: 40px 60px;
-            font-size: 2rem;
+            padding: 40px 80px; 
+            font-size: 2.2rem; 
             line-height: 2;
             text-align: justify;
             font-family: "KaiTi", "BiauKai", serif;
             display: none;
-            animation: fadeText 0.4s;
-            overflow-y: auto;
             color: #2d3436;
+            background: white;
+            /* 翻頁動畫相關 */
+            transform-origin: left center;
+            backface-visibility: hidden;
+            width: 100%;
+            height: 100%;
+            position: absolute; /* 重疊 */
+            top: 0; left: 0;
+            overflow-y: auto;
         }
-        .text-page.active { display: block; }
-        @keyframes fadeText { from{opacity:0; transform:translateX(10px);} to{opacity:1; transform:translateX(0);} }
+
+        .text-page.active { 
+            display: block; 
+            animation: flipIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            z-index: 2;
+        }
+        
+        .text-page.leaving {
+            display: block;
+            animation: flipOut 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            z-index: 1;
+        }
+
+        @keyframes flipIn {
+            from { transform: rotateY(-90deg); opacity: 0; }
+            to { transform: rotateY(0); opacity: 1; }
+        }
+        @keyframes flipOut {
+            from { transform: rotateY(0); opacity: 1; }
+            to { transform: rotateY(90deg); opacity: 0; }
+        }
 
         .pagination {
             height: 50px;
@@ -174,6 +224,8 @@
             align-items: center;
             gap: 20px;
             border-top: 1px solid #ddd;
+            z-index: 10; /* 確保按鈕在最上層 */
+            position: absolute; bottom: 0; width: 100%;
         }
         .page-btn {
             background: none; border: none; cursor: pointer; font-size: 1.2rem; font-weight: bold; color: #555;
@@ -183,21 +235,21 @@
         .page-btn:disabled { color: #ccc; cursor: default; }
 
         .note-panel-v {
-            flex: 1;
+            flex: 1; /* 縮小佔比 */
             background: #fffdf0;
             border: 2px dashed #b2bec3;
             border-radius: 15px;
-            padding: 15px 25px;
+            padding: 10px 20px;
             overflow-y: auto;
             display: flex;
             flex-wrap: wrap;
             gap: 15px;
-            align-content: flex-start;
+            align-content: center;
         }
         .note-item {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             background: white;
-            padding: 8px 15px;
+            padding: 5px 12px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             border: 1px solid #dfe6e9;
@@ -241,15 +293,16 @@
         .chat-row.shen { align-self: flex-start; }
         .chat-row.yun { align-self: flex-end; flex-direction: row-reverse; }
 
-        .avatar-group { display: flex; flex-direction: column; align-items: center; gap: 5px; min-width: 80px; }
+        .avatar-group { display: flex; flex-direction: column; align-items: center; gap: 5px; min-width: 100px; }
         .avatar-name { font-size: 1rem; font-weight: bold; color: #636e72; background: rgba(255,255,255,0.8); padding: 2px 8px; border-radius: 10px; }
-        .avatar-svg { width: 80px; height: 80px; filter: drop-shadow(0 3px 3px rgba(0,0,0,0.1)); }
+        .avatar-svg { width: 110px; height: 110px; filter: drop-shadow(0 3px 3px rgba(0,0,0,0.1)); transition: 0.3s; }
+        .avatar-svg:hover { transform: scale(1.1); }
 
         .chat-bubble {
             padding: 15px 25px; border-radius: 20px; font-size: 1.6rem;
             position: relative; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.05);
             background: white; border: 2px solid #dfe6e9; min-height: 50px; 
-            transition: 0.3s; margin-top: 20px; /* Align with avatar face */
+            transition: 0.3s; margin-top: 25px;
         }
         .chat-bubble:hover { transform: translateY(-2px); border-color: var(--secondary); }
         .chat-row.yun .chat-bubble { background: var(--primary-light); border-color: #ffcdd2; }
@@ -259,7 +312,7 @@
         .chat-trans { opacity: 0; display: none; font-size: 1.3rem; color: #d63031; margin-top: 8px; border-top: 1px dashed rgba(0,0,0,0.2); padding-top: 8px; }
         .placeholder { color: #b2bec3; font-size: 2rem; font-weight: bold; letter-spacing: 5px; }
 
-        /* Slide 5: 三步驟 (修復完成顯示) */
+        /* Slide 5: 三步驟 */
         .step-container { display: flex; justify-content: space-around; width: 100%; height: 60%; align-items: center; }
         .step-box {
             text-align: center; opacity: 0.3; transform: scale(0.9); transition: 0.5s; cursor: pointer;
@@ -287,9 +340,9 @@
             position: relative;
         }
         .zone.hover { background: rgba(255, 234, 167, 0.3); border-color: var(--text); transform: scale(1.02); }
-        .zone.selected-target { background: rgba(253, 121, 168, 0.1); border-color: var(--primary); box-shadow: 0 0 15px rgba(253, 121, 168, 0.3); } /* 點擊模式下的目標高亮 */
+        .zone.selected-target { background: rgba(253, 121, 168, 0.1); border-color: var(--primary); box-shadow: 0 0 15px rgba(253, 121, 168, 0.3); } 
         .zone h3 { font-size: 1.8rem; margin: 10px 0; font-family: "KaiTi", serif; font-weight: bold; }
-        .zone-content { width: 100%; flex: 1; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 10px; justify-content: center; padding-top: 20px; pointer-events: none; } /* Ensure drop works on zone, not content blocking */
+        .zone-content { width: 100%; flex: 1; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 10px; justify-content: center; padding-top: 20px; pointer-events: none; } 
         .zone-content .trait-card { pointer-events: auto; }
 
         .deck-area {
@@ -317,7 +370,7 @@
             text-shadow: 1px 1px 0px var(--wood-dark);
             min-width: 100px; text-align: center;
         }
-        .trait-card::before { /* 穿繩孔 */
+        .trait-card::before { 
             content: ""; position: absolute; top: 5px; left: 50%; transform: translateX(-50%);
             width: 6px; height: 6px; background: #333; border-radius: 50%; box-shadow: inset 0 1px 1px rgba(255,255,255,0.2);
         }
@@ -354,16 +407,23 @@
         .summary-list li::before { content: "★"; color: var(--accent); margin-right: 15px; font-size: 1.5rem; }
         .highlight-text { color: #d63031; font-weight: bold; padding: 0 5px; }
 
-        /* 模態框 */
+        /* 模態框 (共用) */
         .modal-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 999;
+            background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 999;
         }
         .modal-box {
             background: white; padding: 40px; border-radius: 20px; text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4); max-width: 600px;
-            animation: popIn 0.3s;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4); max-width: 800px;
+            animation: popIn 0.3s; position: relative;
         }
+        .video-container {
+            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; width: 640px; background: #000;
+        }
+        .video-container iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        }
+        
         @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
     </style>
@@ -406,10 +466,11 @@
         </div>
     </div>
 
-    <!-- Slide 2: 原文 (翻頁式) -->
+    <!-- Slide 2: 原文 (翻頁動畫式) & 影片 -->
     <div class="slide" id="s2">
         <h2>📜 原文對照與註釋</h2>
         <div class="text-layout-v">
+            <button class="video-btn" onclick="openVideoModal()">📺 課前預習時間</button>
             <div class="text-book-container">
                 <!-- Page 1 -->
                 <div class="text-page active" id="text-page-1">
@@ -433,8 +494,8 @@
             
             <div class="note-panel-v">
                 <div class="note-item"><span class="note-key">1. 芥鹵乳腐：</span>臭豆腐。</div>
-                <div class="note-item"><span class="note-key">2. 蜣螂：</span>音 ㄑㄧㄤ ㄌㄤˊ，動物名(屎殼郎)。</div>
-                <div class="note-item"><span class="note-key">3. 狗竇：</span>狗洞。竇，音ㄉㄡˋ，孔穴、縫隙。</div>
+                <div class="note-item"><span class="note-key">2. 蜣螂：</span>音 ㄑㄧㄤ ㄌㄤˊ，屎殼郎。</div>
+                <div class="note-item"><span class="note-key">3. 狗竇：</span>狗洞。竇，音ㄉㄡˋ，孔穴。</div>
                 <div class="note-item"><span class="note-key">4. 強：</span>音 ㄑㄧㄤˇ，迫使、使用強力。</div>
             </div>
         </div>
@@ -458,22 +519,29 @@
         </div>
     </div>
 
-    <!-- Slide 4: 對話 -->
+    <!-- Slide 4: 對話 (New Avatars) -->
     <div class="slide" id="s4">
         <h2>💬 夫妻毒舌日常</h2>
         <div class="chat-container">
             <!-- Shen Fu -->
             <div class="chat-row shen">
                 <div class="avatar-group">
-                    <!-- Shen Fu Q-Version SVG -->
+                    <!-- NEW DESIGN Shen Fu (Scholar Style) -->
                     <svg class="avatar-svg" viewBox="0 0 100 100">
-                        <circle cx="50" cy="55" r="40" fill="#ffeaa7"/> <!-- Face -->
-                        <path d="M10,50 Q50,-10 90,50" fill="#2d3436"/> <!-- Hat Base -->
-                        <path d="M25,20 Q50,0 75,20 L80,45 L20,45 Z" fill="#2d3436"/> <!-- Hat Top -->
-                        <circle cx="50" cy="15" r="5" fill="#d63031"/> <!-- Hat Button -->
-                        <path d="M15,90 Q50,110 85,90 L85,100 L15,100 Z" fill="#0984e3"/> <!-- Robe -->
-                        <circle cx="35" cy="60" r="3" fill="#333"/> <circle cx="65" cy="60" r="3" fill="#333"/>
-                        <path d="M40,75 Q50,80 60,75" stroke="#333" stroke-width="2" fill="none"/>
+                        <circle cx="50" cy="50" r="48" fill="#f1f2f6"/>
+                        <!-- Hat: Gua Pi Mao -->
+                        <path d="M20,35 Q50,15 80,35 L80,50 Q50,30 20,50 Z" fill="#2d3436"/>
+                        <circle cx="50" cy="25" r="5" fill="#d63031"/>
+                        <!-- Face -->
+                        <circle cx="50" cy="65" r="28" fill="#ffeaa7"/>
+                        <!-- Robe -->
+                        <path d="M10,90 Q50,120 90,90 V120 H10 Z" fill="#0984e3"/>
+                        <!-- Features -->
+                        <circle cx="40" cy="62" r="3" fill="#333"/>
+                        <circle cx="60" cy="62" r="3" fill="#333"/>
+                        <path d="M45,75 Q50,80 55,75" stroke="#333" fill="none" stroke-width="2"/>
+                        <!-- Details -->
+                        <rect x="25" y="85" width="50" height="5" fill="#0c2461"/> <!-- Collar -->
                     </svg>
                     <div class="avatar-name">沈復</div>
                 </div>
@@ -487,16 +555,27 @@
             <!-- Yun Niang -->
             <div class="chat-row yun">
                 <div class="avatar-group">
-                    <!-- Yun Niang Q-Version SVG -->
+                    <!-- NEW DESIGN Yun Niang (Traditional Hair) -->
                     <svg class="avatar-svg" viewBox="0 0 100 100">
-                        <circle cx="50" cy="55" r="40" fill="#ffeaa7"/> <!-- Face -->
-                        <circle cx="20" cy="45" r="15" fill="#2d3436"/> <!-- Left Bun -->
-                        <circle cx="80" cy="45" r="15" fill="#2d3436"/> <!-- Right Bun -->
-                        <path d="M20,45 Q50,10 80,45" fill="#2d3436"/> <!-- Hair Top -->
-                        <circle cx="35" cy="60" r="3" fill="#333"/> <circle cx="65" cy="60" r="3" fill="#333"/>
-                        <path d="M40,75 Q50,85 60,75" stroke="#e056fd" stroke-width="2" fill="none"/>
-                        <circle cx="85" cy="40" r="5" fill="#fd79a8"/> <!-- Flower -->
-                        <path d="M15,90 Q50,110 85,90 L85,100 L15,100 Z" fill="#e056fd"/> <!-- Robe -->
+                        <circle cx="50" cy="50" r="48" fill="#fff0f5"/>
+                        <!-- Robe -->
+                        <path d="M10,95 Q50,120 90,95 V120 H10 Z" fill="#fd79a8"/>
+                        <!-- Face -->
+                        <circle cx="50" cy="65" r="26" fill="#ffeaa7"/>
+                        <!-- Hair (Large Bun) -->
+                        <path d="M20,60 Q50,0 80,60" fill="#2d3436"/>
+                        <circle cx="15" cy="55" r="10" fill="#2d3436"/>
+                        <circle cx="85" cy="55" r="10" fill="#2d3436"/>
+                        <!-- Flower -->
+                        <circle cx="80" cy="45" r="8" fill="#e056fd"/>
+                        <circle cx="80" cy="45" r="3" fill="#ffeaa7"/>
+                        <!-- Features -->
+                        <circle cx="40" cy="62" r="3" fill="#333"/>
+                        <circle cx="60" cy="62" r="3" fill="#333"/>
+                        <path d="M45,75 Q50,80 55,75" stroke="#e056fd" fill="none" stroke-width="2"/>
+                        <!-- Blush -->
+                        <circle cx="35" cy="70" r="4" fill="#fd79a8" opacity="0.4"/>
+                        <circle cx="65" cy="70" r="4" fill="#fd79a8" opacity="0.4"/>
                     </svg>
                     <div class="avatar-name">芸娘</div>
                 </div>
@@ -510,14 +589,15 @@
             <!-- Shen Fu -->
             <div class="chat-row shen">
                 <div class="avatar-group">
-                    <svg class="avatar-svg" viewBox="0 0 100 100">
-                         <circle cx="50" cy="55" r="40" fill="#ffeaa7"/>
-                         <path d="M10,50 Q50,-10 90,50" fill="#2d3436"/>
-                         <path d="M25,20 Q50,0 75,20 L80,45 L20,45 Z" fill="#2d3436"/>
-                         <circle cx="50" cy="15" r="5" fill="#d63031"/>
-                         <path d="M15,90 Q50,110 85,90 L85,100 L15,100 Z" fill="#0984e3"/>
-                         <circle cx="35" cy="60" r="3" fill="#333"/> <circle cx="65" cy="60" r="3" fill="#333"/>
-                         <path d="M40,78 L60,78" stroke="#333" stroke-width="2"/>
+                     <svg class="avatar-svg" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="48" fill="#f1f2f6"/>
+                        <path d="M20,35 Q50,15 80,35 L80,50 Q50,30 20,50 Z" fill="#2d3436"/>
+                        <circle cx="50" cy="25" r="5" fill="#d63031"/>
+                        <circle cx="50" cy="65" r="28" fill="#ffeaa7"/>
+                        <path d="M10,90 Q50,120 90,90 V120 H10 Z" fill="#0984e3"/>
+                        <circle cx="40" cy="62" r="3" fill="#333"/> <circle cx="60" cy="62" r="3" fill="#333"/>
+                        <path d="M42,75 L58,75" stroke="#333" fill="none" stroke-width="2"/> <!-- Flat mouth -->
+                        <rect x="25" y="85" width="50" height="5" fill="#0c2461"/>
                     </svg>
                     <div class="avatar-name">沈復</div>
                 </div>
@@ -532,15 +612,18 @@
             <div class="chat-row yun">
                 <div class="avatar-group">
                     <svg class="avatar-svg" viewBox="0 0 100 100">
-                        <circle cx="50" cy="55" r="40" fill="#ffeaa7"/>
-                        <circle cx="20" cy="45" r="15" fill="#2d3436"/> <circle cx="80" cy="45" r="15" fill="#2d3436"/>
-                        <path d="M20,45 Q50,10 80,45" fill="#2d3436"/>
-                        <circle cx="35" cy="60" r="3" fill="#333"/> <circle cx="65" cy="60" r="3" fill="#333"/>
-                        <path d="M40,75 Q50,85 60,75" stroke="#e056fd" stroke-width="2" fill="none"/>
-                        <circle cx="85" cy="40" r="5" fill="#fd79a8"/>
-                        <circle cx="30" cy="70" r="5" fill="#fd79a8" opacity="0.4"/> <!-- Blush -->
-                        <circle cx="70" cy="70" r="5" fill="#fd79a8" opacity="0.4"/>
-                        <path d="M15,90 Q50,110 85,90 L85,100 L15,100 Z" fill="#e056fd"/>
+                        <circle cx="50" cy="50" r="48" fill="#fff0f5"/>
+                        <path d="M10,95 Q50,120 90,95 V120 H10 Z" fill="#fd79a8"/>
+                        <circle cx="50" cy="65" r="26" fill="#ffeaa7"/>
+                        <path d="M20,60 Q50,0 80,60" fill="#2d3436"/>
+                        <circle cx="15" cy="55" r="10" fill="#2d3436"/>
+                        <circle cx="85" cy="55" r="10" fill="#2d3436"/>
+                        <circle cx="80" cy="45" r="8" fill="#e056fd"/>
+                        <circle cx="80" cy="45" r="3" fill="#ffeaa7"/>
+                        <circle cx="40" cy="62" r="3" fill="#333"/> <circle cx="60" cy="62" r="3" fill="#333"/>
+                        <path d="M40,75 Q50,85 60,75" stroke="#e056fd" fill="none" stroke-width="2"/> <!-- Big Smile -->
+                        <circle cx="35" cy="70" r="4" fill="#fd79a8" opacity="0.4"/>
+                        <circle cx="65" cy="70" r="4" fill="#fd79a8" opacity="0.4"/>
                     </svg>
                     <div class="avatar-name">芸娘</div>
                 </div>
@@ -553,7 +636,7 @@
         </div>
     </div>
 
-    <!-- Slide 5: 三步驟 (修正版) -->
+    <!-- Slide 5: 三步驟 -->
     <div class="slide" id="s5">
         <h2>🤪 真香三部曲</h2>
         <div style="text-align: right; width: 100%; margin-bottom: 20px;">
@@ -579,10 +662,13 @@
         <div id="step-success-msg">🎉 挑戰成功：沈復已經愛上臭豆腐了！</div>
     </div>
 
-    <!-- Slide 6: 特質分類 (修復拖曳與點擊) -->
+    <!-- Slide 6: 特質分類 -->
     <div class="slide" id="s6">
         <h2>🧠 夫妻默契大考驗</h2>
-        <p>請將「特質木牌」拖曳(或點擊)分類！</p>
+        <div style="display:flex; justify-content:space-between; width:100%; align-items:center; margin-bottom:10px;">
+            <p style="margin:0;">請將「特質木牌」拖曳(或點擊)分類！</p>
+            <button class="ctrl-btn secondary" onclick="initSortGame()">↺ 重新挑戰</button>
+        </div>
         
         <div class="sort-game-container">
             <button id="check-btn" onclick="checkAnswers()">完成作答 ✅</button>
@@ -590,13 +676,13 @@
             <!-- 區域：沈復 -->
             <div class="zone shen" id="zone-shen" onclick="zoneClick('shen')">
                 <svg width="100" height="100" viewBox="0 0 100 100">
-                     <circle cx="50" cy="55" r="40" fill="#ffeaa7"/>
-                     <path d="M10,50 Q50,-10 90,50" fill="#2d3436"/>
-                     <path d="M25,20 Q50,0 75,20 L80,45 L20,45 Z" fill="#2d3436"/>
-                     <circle cx="50" cy="15" r="5" fill="#d63031"/>
-                     <path d="M15,90 Q50,110 85,90 L85,100 L15,100 Z" fill="#0984e3"/>
-                     <circle cx="35" cy="60" r="3" fill="#333"/> <circle cx="65" cy="60" r="3" fill="#333"/>
-                     <path d="M40,75 Q50,80 60,75" stroke="#333" stroke-width="2" fill="none"/>
+                     <circle cx="50" cy="50" r="48" fill="#f1f2f6"/>
+                    <path d="M20,35 Q50,15 80,35 L80,50 Q50,30 20,50 Z" fill="#2d3436"/>
+                    <circle cx="50" cy="25" r="5" fill="#d63031"/>
+                    <circle cx="50" cy="65" r="28" fill="#ffeaa7"/>
+                    <path d="M10,90 Q50,120 90,90 V120 H10 Z" fill="#0984e3"/>
+                    <circle cx="40" cy="62" r="3" fill="#333"/> <circle cx="60" cy="62" r="3" fill="#333"/>
+                    <path d="M45,75 Q50,80 55,75" stroke="#333" fill="none" stroke-width="2"/>
                 </svg>
                 <h3>沈復</h3>
                 <div class="zone-content" id="content-shen"></div>
@@ -605,13 +691,16 @@
             <!-- 區域：芸娘 -->
             <div class="zone yun" id="zone-yun" onclick="zoneClick('yun')">
                 <svg width="100" height="100" viewBox="0 0 100 100">
-                    <circle cx="50" cy="55" r="40" fill="#ffeaa7"/>
-                    <circle cx="20" cy="45" r="15" fill="#2d3436"/> <circle cx="80" cy="45" r="15" fill="#2d3436"/>
-                    <path d="M20,45 Q50,10 80,45" fill="#2d3436"/>
-                    <circle cx="35" cy="60" r="3" fill="#333"/> <circle cx="65" cy="60" r="3" fill="#333"/>
-                    <path d="M40,75 Q50,85 60,75" stroke="#e056fd" stroke-width="2" fill="none"/>
-                    <circle cx="85" cy="40" r="5" fill="#fd79a8"/>
-                    <path d="M15,90 Q50,110 85,90 L85,100 L15,100 Z" fill="#e056fd"/>
+                    <circle cx="50" cy="50" r="48" fill="#fff0f5"/>
+                    <path d="M10,95 Q50,120 90,95 V120 H10 Z" fill="#fd79a8"/>
+                    <circle cx="50" cy="65" r="26" fill="#ffeaa7"/>
+                    <path d="M20,60 Q50,0 80,60" fill="#2d3436"/>
+                    <circle cx="15" cy="55" r="10" fill="#2d3436"/>
+                    <circle cx="85" cy="55" r="10" fill="#2d3436"/>
+                    <circle cx="80" cy="45" r="8" fill="#e056fd"/>
+                    <circle cx="80" cy="45" r="3" fill="#ffeaa7"/>
+                    <circle cx="40" cy="62" r="3" fill="#333"/> <circle cx="60" cy="62" r="3" fill="#333"/>
+                    <path d="M45,75 Q50,80 55,75" stroke="#e056fd" fill="none" stroke-width="2"/>
                 </svg>
                 <h3>芸娘</h3>
                 <div class="zone-content" id="content-yun"></div>
@@ -622,7 +711,7 @@
         </div>
     </div>
 
-    <!-- Slide 7: 重點整理 (新增) -->
+    <!-- Slide 7: 重點整理 -->
     <div class="slide" id="s7">
         <h2>📚 課程重點整理</h2>
         <div class="summary-card">
@@ -648,6 +737,16 @@
             <h2 id="modal-title"></h2>
             <p id="modal-msg" style="font-size:1.5rem; line-height:1.6;"></p>
             <button class="ctrl-btn secondary" style="margin-top:20px;" onclick="closeModal()">確定</button>
+        </div>
+    </div>
+
+    <!-- 影片模態框 (新增) -->
+    <div class="modal-overlay" id="video-modal">
+        <div class="modal-box">
+            <button class="ctrl-btn secondary" style="position:absolute; top:10px; right:10px; background:none; color:#333; border:none; font-size:1.5rem;" onclick="closeVideoModal()">✕</button>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/LJBFTKDcISE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
         </div>
     </div>
 
@@ -695,25 +794,36 @@
         }
     }
 
-    // === Slide 2: 翻頁邏輯 ===
+    // === Slide 2: 翻頁邏輯 & 影片 ===
     let textPage = 1;
     function changePage(n) {
         const pages = document.querySelectorAll('.text-page');
         const prevBtn = document.getElementById('prev-page');
         const nextBtn = document.getElementById('next-page');
         
+        // 舊頁面離開動畫
         pages[textPage-1].classList.remove('active');
+        pages[textPage-1].classList.add('leaving');
+        
+        setTimeout(() => {
+             pages.forEach(p => p.classList.remove('leaving')); // 清理
+        }, 800);
+
         textPage += n;
         
         if(textPage < 1) textPage = 1;
         if(textPage > 2) textPage = 2;
         
+        // 新頁面進場動畫
         pages[textPage-1].classList.add('active');
         document.getElementById('page-num').innerText = `${textPage} / 2`;
         
         prevBtn.disabled = (textPage === 1);
         nextBtn.disabled = (textPage === 2);
     }
+
+    function openVideoModal() { document.getElementById('video-modal').style.display = 'flex'; }
+    function closeVideoModal() { document.getElementById('video-modal').style.display = 'none'; }
 
     // === Slide 3: 畫布 ===
     const canvas = document.getElementById('drawing-board');
@@ -784,10 +894,8 @@
         }
     }
 
-    // === Slide 5: 三步驟 (新增完成顯示與重置) ===
-    let stepsCompleted = 0;
+    // === Slide 5: 三步驟 ===
     function activateStep(n) {
-        // 依序開啟，不可跳步（為了邏輯順暢，這裡改為點擊n會開啟1~n）
         for(let i=1; i<=n; i++) {
             let el = document.getElementById(`step${i}`);
             if(el) el.classList.add('active');
@@ -795,8 +903,6 @@
         if (n === 3) {
             document.getElementById('step-success-msg').style.opacity = 1;
             document.getElementById('step-success-msg').style.transform = "translateX(-50%) scale(1.1)";
-            
-            // 簡單煙火特效 (用背景變色代替)
             document.getElementById('s5').style.backgroundColor = "#dff9fb";
         }
     }
@@ -808,7 +914,7 @@
         document.getElementById('s5').style.backgroundColor = "";
     }
 
-    // === Slide 6: 特質分類 (修復拖曳與點擊) ===
+    // === Slide 6: 特質分類 (含重置) ===
     const traits = [
         { id: 1, txt: "喜食蒜", target: "shen" },
         { id: 2, txt: "喜食臭豆腐", target: "yun" },
@@ -821,23 +927,18 @@
 
     function initSortGame() {
         const deck = document.getElementById('deck');
-        // 只初始化一次，避免重複生成
-        if(deck.innerHTML !== "") return; 
-
         document.getElementById('content-shen').innerHTML = '';
         document.getElementById('content-yun').innerHTML = '';
         document.getElementById('check-btn').style.display = 'none';
+        deck.innerHTML = ''; // 清空重新生成
 
         traits.forEach((t) => {
             let card = document.createElement('div');
             card.className = 'trait-card';
             card.innerText = t.txt;
             card.dataset.target = t.target;
-            
-            // 綁定事件
             card.onclick = (e) => selectCardClick(e, card);
             setupDrag(card);
-            
             deck.appendChild(card);
         });
     }
@@ -847,7 +948,6 @@
         let isDragging = false;
 
         const startDrag = (e) => {
-            // 記錄初始點，用於判斷是否只是點擊
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             const clientY = e.touches ? e.touches[0].clientY : e.clientY;
             startX = clientX; startY = clientY;
@@ -856,44 +956,33 @@
             offsetX = clientX - rect.left;
             offsetY = clientY - rect.top;
             
-            // 準備拖曳
             isDragging = false;
 
             const onMove = (mv) => {
                 const mx = mv.touches ? mv.touches[0].clientX : mv.clientX;
                 const my = mv.touches ? mv.touches[0].clientY : mv.clientY;
                 
-                // 超過一定距離才算拖曳
                 if (!isDragging && (Math.abs(mx - startX) > 5 || Math.abs(my - startY) > 5)) {
                     isDragging = true;
-                    el.style.position = 'fixed';
-                    el.style.zIndex = 1000;
-                    el.style.width = rect.width + 'px';
-                    // 取消點擊選擇狀態
+                    el.style.position = 'fixed'; el.style.zIndex = 1000; el.style.width = rect.width + 'px';
                     if(selectedCard) { selectedCard.classList.remove('selected'); selectedCard = null; }
                 }
 
                 if (isDragging) {
-                    mv.preventDefault(); // 防止滾動
-                    el.style.left = (mx - offsetX) + 'px';
-                    el.style.top = (my - offsetY) + 'px';
+                    mv.preventDefault();
+                    el.style.left = (mx - offsetX) + 'px'; el.style.top = (my - offsetY) + 'px';
                     checkHover(mx, my);
                 }
             };
 
             const onEnd = (end) => {
-                document.removeEventListener('mousemove', onMove);
-                document.removeEventListener('touchmove', onMove);
-                document.removeEventListener('mouseup', onEnd);
-                document.removeEventListener('touchend', onEnd);
+                document.removeEventListener('mousemove', onMove); document.removeEventListener('touchmove', onMove);
+                document.removeEventListener('mouseup', onEnd); document.removeEventListener('touchend', onEnd);
 
                 if (isDragging) {
                     el.style.zIndex = '';
-                    
-                    // Drop Check (檢測中心點)
                     const endRect = el.getBoundingClientRect();
-                    const cx = endRect.left + endRect.width/2;
-                    const cy = endRect.top + endRect.height/2;
+                    const cx = endRect.left + endRect.width/2; const cy = endRect.top + endRect.height/2;
                     let dropped = false;
 
                     document.querySelectorAll('.zone').forEach(z => {
@@ -901,30 +990,22 @@
                         const zr = z.getBoundingClientRect();
                         if(cx > zr.left && cx < zr.right && cy > zr.top && cy < zr.bottom) {
                             z.querySelector('.zone-content').appendChild(el);
-                            el.style.position = 'static';
-                            el.style.left = ''; el.style.top = ''; el.style.width = '';
+                            el.style.position = 'static'; el.style.left = ''; el.style.top = ''; el.style.width = '';
                             dropped = true;
                         }
                     });
 
                     if(!dropped) {
-                        // 回到原位
                         document.getElementById('deck').appendChild(el);
-                        el.style.position = 'static';
-                        el.style.left = ''; el.style.top = ''; el.style.width = '';
+                        el.style.position = 'static'; el.style.left = ''; el.style.top = ''; el.style.width = '';
                     }
                     checkCompletion();
                 }
             };
-
-            document.addEventListener('mousemove', onMove);
-            document.addEventListener('touchmove', onMove, {passive: false});
-            document.addEventListener('mouseup', onEnd);
-            document.addEventListener('touchend', onEnd);
+            document.addEventListener('mousemove', onMove); document.addEventListener('touchmove', onMove, {passive: false});
+            document.addEventListener('mouseup', onEnd); document.addEventListener('touchend', onEnd);
         };
-
-        el.addEventListener('mousedown', startDrag);
-        el.addEventListener('touchstart', startDrag, {passive: false});
+        el.addEventListener('mousedown', startDrag); el.addEventListener('touchstart', startDrag, {passive: false});
     }
 
     function checkHover(x, y) {
@@ -935,28 +1016,21 @@
         });
     }
 
-    // 點擊選擇邏輯
     function selectCardClick(e, card) {
-        if(card.style.position === 'fixed') return; // 正在拖曳中不觸發
+        if(card.style.position === 'fixed') return; 
         e.stopPropagation();
-
-        if(selectedCard === card) {
-            selectedCard.classList.remove('selected');
-            selectedCard = null;
-        } else {
+        if(selectedCard === card) { selectedCard.classList.remove('selected'); selectedCard = null; }
+        else {
             if(selectedCard) selectedCard.classList.remove('selected');
-            selectedCard = card;
-            card.classList.add('selected');
+            selectedCard = card; card.classList.add('selected');
         }
     }
 
-    // 點擊區域放置邏輯
     function zoneClick(target) {
         if(selectedCard) {
             const zone = document.getElementById(`content-${target}`);
             zone.appendChild(selectedCard);
-            selectedCard.classList.remove('selected');
-            selectedCard = null;
+            selectedCard.classList.remove('selected'); selectedCard = null;
             checkCompletion();
         }
     }
@@ -986,20 +1060,16 @@
         modal.style.display = 'flex';
 
         if(allCorrect) {
-            title.innerText = "🎉 挑戰成功！";
-            title.style.color = "#00b894";
-            msg.innerHTML = "恭喜你完全掌握了這對夫妻的特質！<br>沈復：討厭怪味但願意嘗試。<br>芸娘：個性強勢又調皮，愛吃臭豆腐。";
+            title.innerText = "🎉 挑戰成功！"; title.style.color = "#00b894";
+            msg.innerHTML = "沈復：討厭怪味但願意嘗試。<br>芸娘：個性強勢又調皮，愛吃臭豆腐。";
             document.getElementById('check-btn').style.display = 'none';
         } else {
-            title.innerText = "❌ 哎呀，有錯誤喔！";
-            title.style.color = "#d63031";
+            title.innerText = "❌ 哎呀，有錯誤喔！"; title.style.color = "#d63031";
             msg.innerText = "紅色的木牌放錯了，再試一次看看？";
             
-            // 重置錯誤卡片函數 (掛在window上以便modal調用)
             window.resetWrongCards = () => {
                 document.querySelectorAll('.trait-card.wrong').forEach(c => {
-                    c.classList.remove('wrong');
-                    document.getElementById('deck').appendChild(c);
+                    c.classList.remove('wrong'); document.getElementById('deck').appendChild(c);
                 });
                 document.getElementById('check-btn').style.display = 'none';
             };
@@ -1008,10 +1078,7 @@
 
     function closeModal() {
         document.getElementById('result-modal').style.display = 'none';
-        if(window.resetWrongCards) {
-            window.resetWrongCards();
-            window.resetWrongCards = null;
-        }
+        if(window.resetWrongCards) { window.resetWrongCards(); window.resetWrongCards = null; }
     }
 
     function finishClass() {
